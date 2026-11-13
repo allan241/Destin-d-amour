@@ -3,148 +3,223 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DESTIN D'AMOUR - Tous Les Films Du Monde</title>
+<title>DESTIN D'AMOUR - 200 Films Africains</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
-body{background:#111;color:white}
-header{background:#000;padding:12px;position:sticky;top:0;z-index:10}
-header b{font-size:19px} header b span{color:#ff7a00}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:#111;color:#fff}
+header{background:#000;padding:14px;text-align:center;position:sticky;top:0;z-index:10}
+header b{font-size:20px} header b span{color:#ff7a00}
 .search{margin:12px 10px;display:flex;gap:8px}
-.search input{flex:1;padding:12px;border-radius:8px;border:0;font-size:15px}
-.search button{padding:12px 16px;background:#ff7a00;color:white;border:0;border-radius:8px;font-weight:bold}
-.cats{display:flex;gap:8px;overflow-x:auto;padding:0 10px 10px;white-space:nowrap}
-.cats button{padding:8px 14px;border-radius:20px;border:1px solid #333;background:#1c1c1c;color:white}
+.search input{flex:1;padding:13px;border-radius:8px;border:0}
+.search button{padding:13px;background:#ff7a00;color:#fff;border:0;border-radius:8px;font-weight:bold}
+.cats{display:flex;gap:8px;overflow-x:auto;padding:0 10px 12px}
+.cats button{padding:9px 15px;border-radius:20px;border:1px solid #333;background:#1c1c1c;color:#fff;white-space:nowrap}
 .cats button.active{background:#ff7a00}
-h2{margin:14px 10px 10px;font-size:17px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 10px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 10px 20px}
 .card{background:#1c1c1c;border-radius:10px;overflow:hidden;cursor:pointer}
-.card img{width:100%;height:230px;object-fit:cover;background:#222}
-.card .info{padding:8px;text-align:center}
-.card .info b{font-size:13px;display:block}
-.card .info small{color:#bbb;font-size:12px}
+.card img{width:100%;height:220px;object-fit:cover;background:#222}
+.card .info{padding:10px;text-align:center}
+.card .info b{font-size:13px}
+.card .info small{color:#bbb}
 #detail{display:none;padding:12px}
-#detail img{width:100%;border-radius:10px;height:280px;object-fit:cover}
-#detail h1{margin:12px 0 6px;font-size:22px}
-#detail p{color:#ccc;line-height:1.5;font-size:14px}
-.meta{color:#ff7a00;margin:10px 0;font-weight:bold}
+#detail img{width:100%;height:300px;object-fit:cover;border-radius:10px}
+#player{display:none;margin:14px 0;background:#000;border-radius:10px;overflow:hidden}
+#player iframe{width:100%;height:230px;border:0}
 .btns{display:flex;gap:10px;margin:14px 0}
 .btns button{flex:1;padding:13px;border:0;border-radius:8px;font-weight:bold}
-.vf{background:#ff7a00;color:white} .vost{background:#333;color:white}
-.ep{background:#1c1c1c;padding:12px;border-radius:8px;margin-top:8px}
-.back{color:#ff7a00;cursor:pointer;margin-bottom:10px;display:block}
-.more{margin:20px;text-align:center}
-.more button{padding:12px 20px;background:#ff7a00;color:white;border:0;border-radius:8px;font-weight:bold}
+.vf{background:#ff7a00;color:#fff} .vost{background:#333;color:#fff}
+.back{color:#ff7a00;cursor:pointer;margin-bottom:12px;display:block}
+#more{width:90%;margin:0 auto 30px;display:block;padding:14px;background:#ff7a00;color:#fff;border:0;border-radius:10px;font-weight:bold}
 </style>
 </head>
 <body>
-<header><b>DESTIN <span>▶</span> D'AMOUR</b><div style="font-size:12px;color:#aaa">TOUS LES FILMS DU MONDE</div></header>
-
-<div class="search">
-<input id="q" placeholder="🔍 Cherche n'importe quel film au monde : Vaiana, Francky, Tika...">
-<button onclick="searchFilm()">CHERCHER</button>
-</div>
-
-<div class="cats">
-<button class="active" onclick="filterCat('Tous',this)">Tous</button>
-<button onclick="filterCat('Gabon',this)">🇬🇦 Gabon</button>
-<button onclick="filterCat('Animation',this)">Animation</button>
-<button onclick="filterCat('Action',this)">Action</button>
-<button onclick="filterCat('Comédie',this)">Comédie</button>
-<button onclick="filterCat('Série',this)">Séries</button>
-</div>
-
-<div id="home">
-<h2 id="titre">🎬 Tous les films du monde - Appuie sur VOIR PLUS pour charger encore</h2>
-<div class="grid" id="films"></div>
-<div class="more"><button onclick="loadMore()">➕ VOIR PLUS DE FILMS - CHARGER ENCORE</button></div>
-</div>
-
+<header><b>DESTIN <span>▶</span> D'AMOUR</b><p>200 FILMS AFRICAINS - ÇA JOUE ICI</p></header>
+<div class="search"><input id="q" placeholder="🔍 Cherche..."><button onclick="doSearch()">CHERCHER</button></div>
+<div class="cats" id="cats"></div>
+<div id="home"><h2 id="title" style="margin:4px 10px 14px">🎬 200 Films Africains</h2><div class="grid" id="films"></div><button id="more" onclick="loadMore()">CHARGER ENCORE ⬇️</button></div>
 <div id="detail">
 <span class="back" onclick="showHome()">‹ Retour</span>
-<img id="d-img"><h1 id="d-title"></h1><p id="d-desc"></p><div class="meta" id="d-meta"></div>
-<div class="btns"><button class="vf">▶ VOIR FILM COMPLET - VF</button><button class="vost">▶ VOSTFR</button></div>
-<div id="d-eps"></div>
+<img id="d-img"><h1 id="d-title" style="margin:12px 0 6px"></h1><p id="d-desc" style="color:#ccc"></p><div id="d-meta" style="color:#ff7a00;margin:10px 0;font-weight:bold"></div>
+<div id="player"><iframe id="video" allowfullscreen></iframe></div>
+<div class="btns"><button class="vf" onclick="playFilm()">▶ VOIR LE FILM ICI</button><button class="vost" onclick="showHome()">FERMER</button></div>
 </div>
-
 <script>
-// BASE 200 FILMS + SYSTEME POUR TOUS LES FILMS DU MONDE
-let all=[
-["Vaiana, la légende du bout du monde","1h47","2016","Animation","Film complet 1h47 en Français"],
-["Vaiana 2","1h40","2024","Animation","Film complet 1h40"],
-["Francky - Saison 1","Saison 1 • 60 Épisodes • 45 min / épisode","2015","Série","Série, chaque épisode 45 min, pas 2h"],
-["Tika Rompiro - Saison 1","Saison 1 • 12 Épisodes • 45 min / épisode","2024","Gabon","Série gabonaise, 45 min par épisode"],
-["Destin D'Amour - Saison 1","Saison 1 • 10 Épisodes • 52 min / épisode","2026","Gabon","Série gabonaise Libreville"],
-["Dôlè","1h32","2000","Gabon","Film gabonais complet 1h32"],
-["Avengers : Endgame","3h01","2019","Action","Film complet 3h01"],
-["Avengers : Infinity War","2h29","2018","Action","Film complet 2h29"],
-["Le Roi Lion","1h58","2019","Animation","Film complet 1h58"],
-["Fast & Furious X","2h21","2023","Action","Film complet 2h21"],
-["La Reine des Neiges","1h42","2013","Animation","Film complet 1h42"],
-["Toy Story 4","1h40","2019","Animation","Film complet 1h40"],
-["Shrek 1","1h30","2001","Animation","Film complet 1h30"],
-["Coco","1h45","2017","Animation","Film complet 1h45"],
-["Intouchables","1h52","2011","Comédie","Film complet 1h52"],
-["Titanic","3h14","1997","Action","Film complet 3h14"],
-["Avatar 2","3h12","2022","Action","Film complet 3h12"],
-["Harry Potter 1","2h32","2001","Action","Film complet 2h32"],
-["Black Panther","2h14","2018","Action","Film complet 2h14"],
-["Spider-Man No Way Home","2h28","2021","Action","Film complet 2h28"],
-["Jumanji 2","1h59","2017","Comédie","Film complet 1h59"],
-["Barbie","1h54","2023","Comédie","Film complet 1h54"],
-["Super Mario Bros","1h32","2023","Animation","Film complet 1h32"],
-["Sonic 2","2h02","2022","Animation","Film complet 2h02"],
-["Dune 2","2h46","2024","Action","Film complet 2h46"],
-["Oppenheimer","3h00","2023","Action","Film complet 3h00"],
-["Les Frasques d'Ebinto","1h45","2022","Gabon","Film gabonais complet"],
-["Amour à Libreville","1h41","2024","Gabon","Film gabonais complet"],
-["Anikulapo","2h21","2022","Gabon","Film africain complet"],
-["King of Boys","2h10","2018","Gabon","Film africain complet"]
-];
-// On génère les 200+ films du monde automatiquement pour ne pas tout taper
-let extraTitles=["Vice-Versa 2","Encanto","Soul","Luca","Monstres & Cie","Là-Haut","Ratatouille","Wall-E","Les Indestructibles 2","Cars 3","Dragons 3","Baby Boss 2","Minions 2","Moi Moche et Méchant 4","Paddington 2","Wonka","Sonic 3","Joker 2","The Batman","Pirates des Caraïbes 1","King Kong","Le Dîner de Cons","Astérix Mission Cléopâtre","Taxi 1","La Famille Bélier","Kirikou","Ernest et Célestine","Le Chat Potté 2","Avatar 1","John Wick 4","Mission Impossible Fallout","Transformers 1","Iron Man 1","Thor 3","Captain America 3","Doctor Strange 2","Guardians 3","Ant-Man 3","Captain Marvel","Fast & Furious 7","Fast & Furious 9","Jumanji 3","Harry Potter 2","Harry Potter 4"];
-extraTitles.forEach((t,i)=>{ all.push([t, (1+ (i%2))+"h"+(10+ (i*3)%50)+"min", "20"+(10+i%15), i%3==0?"Animation":i%3==1?"Action":"Comédie", "Film complet en Français - Durée exacte affichée"]) });
-
-let shown=20;
-let currentCat="Tous";
-function img(t){return "https://placehold.co/500x750/1c1c1c/fff?text="+encodeURIComponent(t)}
-function render(){
-let list=all.filter(f=> currentCat=="Tous" || f[3]==currentCat);
-document.getElementById('films').innerHTML=list.slice(0,shown).map((f,i)=>{
-let obj={t:f[0],duree:f[1],annee:f[2],img:img(f[0]),desc:f[4],cat:f[3]};
-return `<div class="card" onclick='openDetail(${JSON.stringify(obj).replace(/'/g,"")}, "${f[3]=='Série'?'serie':'film'}")'><img src="${obj.img}"><div class="info"><b>${f[0]}</b><small>${f[1]} • ${f[2]}</small></div></div>`
-}).join('');
-document.getElementById('titre').innerText=`🎬 ${list.length}+ Films affichés - Total base : ${all.length} films - Appuie sur VOIR PLUS`;
-}
-function loadMore(){shown+=20; render();}
-function filterCat(c,btn){currentCat=c; shown=20; document.querySelectorAll('.cats button').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); render();}
-function searchFilm(){
-let q=document.getElementById('q').value.toLowerCase();
-if(!q){render(); return;}
-let list=all.filter(f=>f[0].toLowerCase().includes(q));
-if(list.length==0){
-document.getElementById('films').innerHTML=`<div style="grid-column:1/3;text-align:center;padding:20px">Film "<b>${q}</b>" pas encore dans la base de 200.<br><br>Mais il existe dans le monde !<br>Dis-moi le nom exact et sa durée, je l'ajoute pour toi.<br><br>Exemple : Vaiana = 1h47, Francky = 45 min par épisode</div>`;
-return;
-}
-document.getElementById('films').innerHTML=list.map(f=>{
-let obj={t:f[0],duree:f[1],annee:f[2],img:img(f[0]),desc:f[4]};
-return `<div class="card" onclick='openDetail(${JSON.stringify(obj).replace(/'/g,"")}, "film")'><img src="${obj.img}"><div class="info"><b>${f[0]}</b><small>${f[1]} • ${f[2]}</small></div></div>`
-}).join('');
-}
-function openDetail(f,type){
-document.getElementById('home').style.display='none';
-document.getElementById('detail').style.display='block';
-document.getElementById('d-img').src=f.img;
-document.getElementById('d-title').innerText=f.t;
-document.getElementById('d-desc').innerText=f.desc;
-document.getElementById('d-meta').innerText=(type=='film'?'FILM COMPLET':'SÉRIE')+' • '+f.annee+' • Durée : '+f.duree;
-let eps='';
-if(type=='film'){eps=`<div class="ep">▶ FILM COMPLET - ${f.duree} - En Français</div>`}
-else{for(let i=1;i<=5;i++){eps+=`<div class="ep">▶ Épisode ${i} - 45 min - VF</div>`}}
-document.getElementById('d-eps').innerHTML=eps;
-window.scrollTo(0,0);
-}
-function showHome(){document.getElementById('home').style.display='block';document.getElementById('detail').style.display='none';}
-render();
-</script>
-</body>
-</html>
+let raw=`Atlantique|Sénégal|2019|Sénégal
+Rafiki|Kenya|2018|Kenya
+Lionheart|Nigeria|2018|Nollywood
+King of Boys|Nigeria|2018|Nollywood
+King of Boys 2|Nigeria|2021|Nollywood
+The Wedding Party|Nigeria|2016|Nollywood
+The Wedding Party 2|Nigeria|2017|Nollywood
+October 1|Nigeria|2014|Nollywood
+93 Days|Nigeria|2016|Nollywood
+Oloture|Nigeria|2019|Nollywood
+Blood Sisters|Nigeria|2022|Nollywood
+Far From Home|Nigeria|2022|Nollywood
+Anikulapo|Nigeria|2022|Nollywood
+Anikulapo Rise of the Spectre|Nigeria|2024|Nollywood
+Gangs of Lagos|Nigeria|2023|Nollywood
+Shanty Town|Nigeria|2023|Nollywood
+La Noire de...|Sénégal|1966|Sénégal
+Touki Bouki|Sénégal|1973|Sénégal
+Moolaadé|Sénégal|2004|Sénégal
+Félicité|RDC|2017|Congo
+Timbuktu|Mali|2014|Mali
+Yeelen|Mali|1987|Mali
+Aya de Yopougon|Côte d'Ivoire|2013|Côte d'Ivoire
+Quartier Mozart|Cameroun|1992|Cameroun
+Sango Malo|Cameroun|1991|Cameroun
+Le Silence de la Forêt|Gabon|2003|Gabon
+Dôlè|Gabon|2000|Gabon
+L'Oeil du Cyclone|Burkina Faso|2015|Burkina
+Wulu|Mali|2016|Mali
+Wallay|Burkina Faso|2017|Burkina
+Supa Modo|Kenya|2018|Kenya
+Nairobi Half Life|Kenya|2012|Kenya
+Queen of Katwe|Ouganda|2016|Kenya
+Queen Sono|Afrique du Sud|2020|Afrique du Sud
+Blood & Water|Afrique du Sud|2020|Afrique du Sud
+Jiva!|Afrique du Sud|2021|Afrique du Sud
+Savage Beauty|Afrique du Sud|2022|Afrique du Sud
+The Woman King|Bénin|2022|Bénin
+Banel & Adama|Sénégal|2023|Sénégal
+Omen|RDC|2023|Congo
+Mami Wata|Nigeria|2023|Nollywood
+The Black Book|Nigeria|2023|Nollywood
+Jagun Jagun|Nigeria|2023|Nollywood
+A Sunday Affair|Nigeria|2023|Nollywood
+Ijogbon|Nigeria|2023|Nollywood
+A Tribe Called Judah|Nigeria|2023|Nollywood
+Sista|Nigeria|2023|Nollywood
+Ada Omo Daddy|Nigeria|2023|Nollywood
+Ajosepo|Nigeria|2024|Nollywood
+Beast of Two Worlds|Nigeria|2024|Nollywood
+Lisabi|Nigeria|2024|Nollywood
+Christmas in Lagos|Nigeria|2024|Nollywood
+Almajiri|Nigeria|2022|Nollywood
+The Trade|Nigeria|2023|Nollywood
+Aburo|Ghana|2024|Ghana
+Keteke|Ghana|2017|Ghana
+Azali|Ghana|2018|Ghana
+The Burial of Kojo|Ghana|2018|Ghana
+Single and Married|Ghana|2012|Ghana
+Living in Bondage|Nigeria|1992|Nollywood
+Living in Bondage Breaking Free|Nigeria|2019|Nollywood
+Rattlesnake|Nigeria|2020|Nollywood
+Citation|Nigeria|2020|Nollywood
+Sugar Rush|Nigeria|2019|Nollywood
+Merry Men|Nigeria|2018|Nollywood
+Merry Men 2|Nigeria|2019|Nollywood
+Your Excellency|Nigeria|2019|Nollywood
+Omo Ghetto The Saga|Nigeria|2020|Nollywood
+Chief Daddy|Nigeria|2018|Nollywood
+Chief Daddy 2|Nigeria|2021|Nollywood
+The Set Up|Nigeria|2019|Nollywood
+The Set Up 2|Nigeria|2022|Nollywood
+Quam's Money|Nigeria|2020|Nollywood
+Namaste Wahala|Nigeria|2020|Nollywood
+Swallow|Nigeria|2021|Nollywood
+Eyimofe|Nigeria|2020|Nollywood
+This Lady Called Life|Nigeria|2020|Nollywood
+A Naija Christmas|Nigeria|2021|Nollywood
+Breaded Life|Nigeria|2021|Nollywood
+Bad Boys and Brides|Nigeria|2023|Nollywood
+Progressive Tailors Club|Nigeria|2021|Nollywood
+Aki and Pawpaw|Nigeria|2021|Nollywood
+Battle on Buka Street|Nigeria|2022|Nollywood
+Brotherhood|Nigeria|2022|Nollywood
+Elesin Oba|Nigeria|2022|Nollywood
+The Delivery Boy|Nigeria|2018|Nollywood
+Òlòtūré|Nigeria|2019|Nollywood
+Up North|Nigeria|2018|Nollywood
+The Ghost and the Tout|Nigeria|2018|Nollywood
+Mokalik|Nigeria|2019|Nollywood
+The Figurine|Nigeria|2009|Nollywood
+Phone Swap|Nigeria|2012|Nollywood
+Mr and Mrs|Nigeria|2012|Nollywood
+Half of a Yellow Sun|Nigeria|2013|Nollywood
+The Meeting|Nigeria|2012|Nollywood
+Last Flight to Abuja|Nigeria|2012|Nollywood
+Tsotsi|Afrique du Sud|2005|Afrique du Sud
+District 9|Afrique du Sud|2009|Afrique du Sud
+Invictus|Afrique du Sud|2009|Afrique du Sud
+Mandela Long Walk to Freedom|Afrique du Sud|2013|Afrique du Sud
+Sarafina|Afrique du Sud|1992|Afrique du Sud
+Cry Freedom|Afrique du Sud|1987|Afrique du Sud
+Yesterday|Afrique du Sud|2004|Afrique du Sud
+Hotel Rwanda|Rwanda|2004|Congo
+Sometimes in April|Rwanda|2005|Congo
+Shooting Dogs|Rwanda|2005|Congo
+Beasts of No Nation|Ghana|2015|Ghana
+The Cursed Ones|Ghana|2015|Ghana
+Sidechic Gang|Ghana|2018|Ghana
+Aloe Vera|Ghana|2020|Ghana
+Fix Us|Ghana|2019|Ghana
+Xala|Sénégal|1975|Sénégal
+Ceddo|Sénégal|1977|Sénégal
+Emitai|Sénégal|1971|Sénégal
+Camp de Thiaroye|Sénégal|1988|Sénégal
+Hyènes|Sénégal|1992|Sénégal
+Faat Kine|Sénégal|2000|Sénégal
+Madame Brouette|Sénégal|2002|Sénégal
+Karmen Geï|Sénégal|2001|Sénégal
+Guimba the Tyrant|Mali|1995|Mali
+Life on Earth|Mali|1998|Mali
+The Wind|Mali|1982|Mali
+Yaaba|Burkina Faso|1989|Burkina
+Tilaï|Burkina Faso|1990|Burkina
+Samba Traoré|Burkina Faso|1992|Burkina
+Kini and Adams|Burkina Faso|1997|Burkina
+Buud Yam|Burkina Faso|1997|Burkina
+Muna Moto|Cameroun|1975|Cameroun
+Clando|Cameroun|1996|Cameroun
+Sisters in Law|Cameroun|2005|Cameroun
+The Fight of the Angel|Cameroun|2010|Cameroun
+White Colour Black|Cameroun|2018|Cameroun
+The Fisherman's Diary|Cameroun|2020|Cameroun
+Therapy|Cameroun|2021|Cameroun
+A Man for the Weekend|Cameroun|2017|Cameroun
+Rebel|Gabon|2018|Gabon
+The African Storm|Gabon|2017|Gabon
+Boxing Libreville|Gabon|2018|Gabon
+Le Grand Blanc de Lambaréné|Gabon|1995|Gabon
+N'Goné|Gabon|2015|Gabon
+The Mercy of the Jungle|Rwanda|2018|Congo
+Grey Matter|Rwanda|2011|Congo
+The Unseen|Afrique du Sud|2017|Afrique du Sud
+Five Fingers for Marseilles|Afrique du Sud|2017|Afrique du Sud
+Sew the Winter to My Skin|Afrique du Sud|2018|Afrique du Sud
+Knuckle City|Afrique du Sud|2019|Afrique du Sud
+Barakat|Afrique du Sud|2020|Afrique du Sud
+Good Madam|Afrique du Sud|2021|Afrique du Sud
+The Kissing Booth|Afrique du Sud|2018|Afrique du Sud
+Santana|Afrique du Sud|2020|Afrique du Sud
+Seriously Single|Afrique du Sud|2020|Afrique du Sud
+Happiness Ever After|Afrique du Sud|2021|Afrique du Sud
+Collision|Afrique du Sud|2022|Afrique du Sud
+Wild is the Wind|Afrique du Sud|2022|Afrique du Sud
+The Umbrella Men|Afrique du Sud|2022|Afrique du Sud
+Shaka iLembe|Afrique du Sud|2023|Afrique du Sud
+Yizo Yizo|Afrique du Sud|1999|Afrique du Sud
+Soul City|Afrique du Sud|1994|Afrique du Sud
+Uzalo|Afrique du Sud|2015|Afrique du Sud
+Skeem Saam|Afrique du Sud|2011|Afrique du Sud
+Scandal|Afrique du Sud|2005|Afrique du Sud
+Generations|Afrique du Sud|1993|Afrique du Sud
+Isibaya|Afrique du Sud|2013|Afrique du Sud
+Lockdown|Afrique du Sud|2017|Afrique du Sud
+The Queen|Afrique du Sud|2016|Afrique du Sud
+The River|Afrique du Sud|2018|Afrique du Sud
+Diep City|Afrique du Sud|2021|Afrique du Sud
+Isono|Afrique du Sud|2020|Afrique du Sud
+House of Zwide|Afrique du Sud|2021|Afrique du Sud
+The Wife|Afrique du Sud|2021|Afrique du Sud
+Shaka Zulu|Afrique du Sud|1986|Afrique du Sud
+Roots|Gambie|1977|Sénégal
+The Boy Who Harnessed the Wind|Malawi|2019|Kenya
+The Last Fishing Boat|Malawi|2012|Kenya
+Road to Sunrise|Malawi|2017|Kenya
+Fatsani|Malawi|2020|Kenya
+The Road to Sunrise|Malawi|2017|Kenya
+Lusaka|Zambie|2020|Congo
+I Am Not a Witch|Zambie|2017|
