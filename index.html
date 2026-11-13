@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Destin D'Amour.com</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:#0b0b0b;color:#fff}
+header{position:fixed;top:0;width:100%;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,.95);z-index:100}
+.logo{color:#e50914;font-size:20px;font-weight:900}
+.logo span{color:#fff;font-size:12px}
+nav a{color:#fff;text-decoration:none;margin:0 6px;font-size:13px;cursor:pointer}
+.hero{height:65vh;background:linear-gradient(to top,#0b0b0b,transparent),url('https://image.tmdb.org/t/p/original/8ZTVqvKDQ8emSGUEMjsS4yHAwrpX.jpg') center/cover;display:flex;align-items:end;padding:30px}
+.hero h1{font-size:28px}
+.hero p{color:#ddd;font-size:13px;line-height:1.6;margin-top:8px}
+.btn{margin-top:12px;padding:10px 16px;border:none;border-radius:6px;font-weight:bold;cursor:pointer}
+.btn-red{background:#e50914;color:#fff}
+.btn-white{background:#fff;color:#000;margin-left:8px}
+.cat-bar{display:flex;gap:8px;padding:15px 20px;flex-wrap:wrap}
+.cat-bar button{padding:8px 14px;border-radius:20px;border:1px solid #333;background:#1c1c1c;color:#fff;cursor:pointer}
+.cat-bar button.active{background:#e50914}
+h2{padding:10px 20px;font-size:19px}
+.row{display:flex;gap:12px;overflow-x:auto;padding:5px 20px 20px}
+.card{min-width:150px;cursor:pointer}
+.card:hover{transform:scale(1.05)}
+.card img{width:150px;height:225px;object-fit:cover;border-radius:10px;background:#222}
+.card p{font-size:12px;margin-top:6px;color:#ccc;text-align:center}
+.search{padding:8px 12px;border-radius:20px;border:none;outline:none;width:150px}
+#modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:200;justify-content:center;align-items:center;padding:15px}
+.modal-content{background:#1a1a1a;width:100%;max-width:700px;border-radius:12px;overflow:hidden;max-height:90vh;overflow-y:auto}
+.modal-content img{width:100%;height:300px;object-fit:cover}
+.modal-body{padding:18px}
+.close{float:right;cursor:pointer;font-size:20px}
+footer{text-align:center;padding:25px;color:#777;font-size:12px}
+</style>
+</head>
+<body>
+<header>
+<div class="logo">DESTIN D'AMOUR <span>.com</span></div>
+<nav><a onclick="showAll()">Accueil</a><a onclick="filterCat('Film')">Films</a><a onclick="filterCat('Série')">Séries</a></nav>
+<input class="search" id="searchInput" placeholder="Rechercher..." onkeyup="if(event.key==='Enter') searchFilm()">
+</header>
+<div class="hero">
+<div><h1>Destin D'Amour - Films & Séries</h1><p>Anciens, nouveaux, films, séries, anime. Clique sur une affiche pour voir le résumé et la bande-annonce.</p>
+<button class="btn btn-red" onclick="filterCat('Film')">▶ Voir les Films</button>
+<button class="btn btn-white" onclick="filterCat('Série')">Voir les Séries</button></div>
+</div>
+<div class="cat-bar">
+<button class="active" onclick="showAll(this)">🔥 Tous</button>
+<button onclick="filterCat('Film',this)">🎬 Films</button>
+<button onclick="filterCat('Série',this)">📺 Séries</button>
+<button onclick="filterCat('Anime',this)">🇯🇵 Anime</button>
+<button onclick="filterCat('Amour',this)">❤️ Amour</button>
+<button onclick="filterCat('Action',this)">💥 Action</button>
+</div>
+<h2 id="sectionTitle">🔥 Tendances</h2>
+<div class="row" id="movieRow"></div>
+<div id="modal" onclick="closeModal()"><div class="modal-content" onclick="event.stopPropagation()"><img id="mImg" src=""><div class="modal-body"><span class="close" onclick="closeModal()">✕</span><h2 id="mTitle"></h2><p id="mDesc" style="color:#ccc;line-height:1.6;margin:12px 0"></p><p id="mInfo" style="color:#e50914;font-weight:bold"></p><button class="btn btn-red" onclick="openTrailer()">▶ Bande-annonce YouTube</button> <button class="btn btn-white" onclick="closeModal()">Fermer</button></div></div></div>
+<footer>Destin D'Amour.com © 2026 - Films, Séries, Anime<br>Ce site présente les informations et bandes-annonces officielles.</footer>
+<script>
+let films=[
+{t:"Destin D'Amour",c:"Amour",a:"2025",n:"9.2",img:"https://image.tmdb.org/t/p/w500/8ZTVqvKDQ8emSGUEMjsS4yHAwrpX.jpg",d:"Une histoire d'amour inoubliable à Libreville entre deux jeunes que tout sépare mais que le destin réunit."},
+{t:"Avatar 2 : La Voie de l'Eau",c:"Film",a:"2022",n:"7.6",img:"https://image.tmdb.org/t/p/w500/s16H6tpK2utvwDtzZ8Qy4qm5Emw.jpg",d:"Jake Sully et Neytiri doivent protéger leur famille sur Pandora face à une nouvelle menace."},
+{t:"Black Panther : Wakanda Forever",c:"Film",a:"2022",n:"7.2",img:"https://image.tmdb.org/t/p/w500/sv1xJUazXeYqALzczSZ3O6nkH75.jpg",d:"Le royaume du Wakanda pleure son roi et doit se battre pour son avenir."},
+{t:"One Piece",c:"Anime",a:"1999",n:"8.7",img:"https://image.tmdb.org/t/p/w500/eVX05xRKS7JhEYQFObCi4lAnZT4.jpg",d:"Luffy et son équipage partent à la recherche du One Piece, le trésor légendaire."},
+{t:"Naruto Shippuden",c:"Anime",a:"2007",n:"8.5",img:"https://image.tmdb.org/t/p/w500/2zAxxVjD8qC2e1C8e9FfL1XvG6T.jpg",d:"Naruto revient au village pour devenir Hokage et sauver son ami Sasuke."},
+{t:"Squid Game",c:"Série",a:"2021",n:"8.0",img:"https://image.tmdb.org/t/p/w500/dDlEmu3EZ0Pgg93K2SVNLCjCSvE.jpg",d:"456 joueurs endettés acceptent un jeu mystérieux pour gagner une énorme somme."},
+{t:"Money Heist",c:"Série",a:"2017",n:"8.2",img:"https://image.tmdb.org/t/p/w500/reEMJA1uzscCbkpeRJeTT2bjqUp.jpg",d:"Un professeur recrute 8 braqueurs pour le plus grand braquage de l'histoire."},
+{t:"Titanic",c:"Amour",a:"1997",n:"7.9",img:"https://image.tmdb.org/t/p/w500/9xjZS2rlVxm8SFx8kPC3aIGCOYQ.jpg",d:"Jack et Rose vivent une histoire d'amour impossible à bord du Titanic."},
+{t:"John Wick 4",c:"Action",a:"2023",n:"7.8",img:"https://image.tmdb.org/t/p/w500/vZloFAK7NmvMGKE7VkF5UHaz0I.jpg",d:"John Wick découvre une voie pour vaincre la Grande Table."},
+{t:"Fast & Furious 10",c:"Action",a:"2023",n:"7.0",img:"https://image.tmdb.org/t/p/w500/fiVW06jE7z9YnO4trhaMEdghqVl.jpg",d:"Dom et sa famille affrontent leur ennemi le plus dangereux."}
+];
+let current=null;
+function render(list){document.getElementById('movieRow').innerHTML=list.map((m,i)=>`<div class="card" onclick="openDetail(${films.indexOf(m)})"><img src="${m.img}"><p>${m.t} • ${m.a} ⭐ ${m.n}</p></div>`).join('');}
+function showAll(b){setActive(b);document.getElementById('sectionTitle').innerText="🔥 Tendances";render(films);}
+function filterCat(cat,b){setActive(b);document.getElementById('sectionTitle').innerText=cat;render(films.filter(f=>f.c===cat));}
+function searchFilm(){let q=document.getElementById('searchInput').value.toLowerCase();render(films.filter(f=>f.t.toLowerCase().includes(q)));}
+function openDetail(i){current=films[i];document.getElementById('mImg').src=current.img;document.getElementById('mTitle').innerText=current.t;document.getElementById('mDesc').innerText=current.d;document.getElementById('mInfo').innerText=`⭐ ${current.n}/10 • ${current.a} • ${current.c}`;document.getElementById('modal').style.display='flex';}
+function openTrailer(){if(current) window.open('https://www.youtube.com/results?search_query='+encodeURIComponent(current.t+' bande annonce officielle'),'_blank');}
+function closeModal(){document.getElementById('modal').style.display='none';}
+function setActive(b){if(!b)return;document.querySelectorAll('.cat-bar button').forEach(x=>x.classList.remove('active'));b.classList.add('active');}
+render(films);
+</script>
+</body>
+                                                                                                                                                                                                                                                                                               </html>
