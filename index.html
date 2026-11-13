@@ -3,84 +3,166 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Destin D'Amour.com</title>
+<title>DESTIN D'AMOUR - Films & Séries</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
-body{background:#0b0b0b;color:#fff}
-header{position:fixed;top:0;width:100%;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,.95);z-index:100}
-.logo{color:#e50914;font-size:20px;font-weight:900}
-.logo span{color:#fff;font-size:12px}
-nav a{color:#fff;text-decoration:none;margin:0 6px;font-size:13px;cursor:pointer}
-.hero{height:65vh;background:linear-gradient(to top,#0b0b0b,transparent),url('https://image.tmdb.org/t/p/original/8ZTVqvKDQ8emSGUEMjsS4yHAwrpX.jpg') center/cover;display:flex;align-items:end;padding:30px}
-.hero h1{font-size:28px}
-.hero p{color:#ddd;font-size:13px;line-height:1.6;margin-top:8px}
-.btn{margin-top:12px;padding:10px 16px;border:none;border-radius:6px;font-weight:bold;cursor:pointer}
-.btn-red{background:#e50914;color:#fff}
-.btn-white{background:#fff;color:#000;margin-left:8px}
-.cat-bar{display:flex;gap:8px;padding:15px 20px;flex-wrap:wrap}
-.cat-bar button{padding:8px 14px;border-radius:20px;border:1px solid #333;background:#1c1c1c;color:#fff;cursor:pointer}
-.cat-bar button.active{background:#e50914}
-h2{padding:10px 20px;font-size:19px}
-.row{display:flex;gap:12px;overflow-x:auto;padding:5px 20px 20px}
-.card{min-width:150px;cursor:pointer}
-.card:hover{transform:scale(1.05)}
-.card img{width:150px;height:225px;object-fit:cover;border-radius:10px;background:#222}
-.card p{font-size:12px;margin-top:6px;color:#ccc;text-align:center}
-.search{padding:8px 12px;border-radius:20px;border:none;outline:none;width:150px}
-#modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:200;justify-content:center;align-items:center;padding:15px}
-.modal-content{background:#1a1a1a;width:100%;max-width:700px;border-radius:12px;overflow:hidden;max-height:90vh;overflow-y:auto}
-.modal-content img{width:100%;height:300px;object-fit:cover}
-.modal-body{padding:18px}
-.close{float:right;cursor:pointer;font-size:20px}
-footer{text-align:center;padding:25px;color:#777;font-size:12px}
+body{background:#1a1a1a;color:#fff}
+header{position:sticky;top:0;background:#111;display:flex;justify-content:space-between;align-items:center;padding:12px 15px;z-index:100}
+.logo{font-weight:900;font-size:18px;letter-spacing:1px}
+.logo span{color:#ff7a00}
+.head-right{display:flex;gap:18px;align-items:center;font-size:20px}
+.bell{position:relative}
+.bell b{position:absolute;top:-8px;right:-8px;background:red;color:#fff;font-size:11px;padding:2px 5px;border-radius:50%}
+.menu{color:#ff7a00;font-size:24px}
+.search-bar{padding:10px 15px;background:#222}
+.search-bar input{width:100%;padding:10px;border-radius:20px;border:none;outline:none;background:#333;color:#fff}
+.section{padding:15px}
+.sec-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.sec-head h3{font-size:17px}
+.sec-head a{color:#fff;text-decoration:none;font-size:13px}
+.row{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding-bottom:5px}
+.card{min-width:150px;position:relative;cursor:pointer}
+.card img{width:150px;height:220px;object-fit:cover;border-radius:8px}
+.card .badge{position:absolute;top:6px;left:6px;background:rgba(0,0,0,.7);font-size:10px;padding:3px 5px;border-radius:4px}
+.card .note{position:absolute;top:6px;right:6px;background:rgba(0,0,0,.7);font-size:11px;padding:3px 6px;border-radius:4px}
+.card p{font-size:13px;text-align:center;margin-top:6px}
+.box-title{border:2px solid #ff7a00;display:inline-block;padding:8px 12px;border-radius:4px;margin:15px;font-size:15px;font-weight:bold}
+.box-right{float:right;border:2px solid #ff7a00;padding:8px 10px;border-radius:4px;margin:15px 15px 0 0;font-size:13px}
+.grid{display:flex;gap:12px;padding:0 15px 10px;flex-wrap:wrap}
+.grid .card{min-width:47%}
+.grid .card img{width:100%;height:220px}
+#playerPage{display:none;background:#111;min-height:100vh}
+.player{width:100%;height:340px;background:#000;position:relative;display:flex;justify-content:center;align-items:center}
+.player iframe{width:100%;height:100%;border:none;display:none}
+.playBtn{width:90px;height:90px;background:#ff7a00;clip-path:polygon(0 0,100% 50%,0 100%);cursor:pointer}
+.playerTop{position:absolute;top:10px;left:0;right:0;display:flex;justify-content:space-between;padding:0 12px;font-size:20px;color:#fff}
+.langs{display:flex;gap:10px;padding:12px}
+.langs button{flex:1;padding:10px;border:none;background:#2b2b2b;color:#fff;border-radius:4px;font-weight:bold}
+.langs button.active{background:#ff7a00}
+.ep{margin:0 12px 8px;background:#222;padding:12px;border-radius:6px;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+.ep.active{border-left:4px solid #ff7a00;background:#2f2f2f}
+.info{padding:15px}
+.info h2{font-size:20px;margin-bottom:8px}
+.info p{color:#ccc;font-size:14px;line-height:1.6}
+.back{padding:10px 15px;cursor:pointer;color:#ff7a00}
+.btn-orange{background:#ff7a00;color:#fff;border:none;padding:12px 18px;border-radius:6px;font-weight:bold;width:100%;margin-top:12px;cursor:pointer}
+footer{text-align:center;padding:20px;color:#888;font-size:12px}
 </style>
 </head>
 <body>
+
+<div id="home">
 <header>
-<div class="logo">DESTIN D'AMOUR <span>.com</span></div>
-<nav><a onclick="showAll()">Accueil</a><a onclick="filterCat('Film')">Films</a><a onclick="filterCat('Série')">Séries</a></nav>
-<input class="search" id="searchInput" placeholder="Rechercher..." onkeyup="if(event.key==='Enter') searchFilm()">
+<div class="logo">DESTIN <span>▶</span> D'AMOUR</div>
+<div class="head-right"><div class="bell">🔔<b>3</b></div><div class="menu">☰</div></div>
 </header>
-<div class="hero">
-<div><h1>Destin D'Amour - Films & Séries</h1><p>Anciens, nouveaux, films, séries, anime. Clique sur une affiche pour voir le résumé et la bande-annonce.</p>
-<button class="btn btn-red" onclick="filterCat('Film')">▶ Voir les Films</button>
-<button class="btn btn-white" onclick="filterCat('Série')">Voir les Séries</button></div>
+<div class="search-bar"><input id="search" placeholder="Rechercher un film, une série..." oninput="searchFilm()"></div>
+
+<div class="section">
+<div class="sec-head"><h3>Films du moment</h3><a href="#">voir la suite ›</a></div>
+<div class="row" id="moment"></div>
 </div>
-<div class="cat-bar">
-<button class="active" onclick="showAll(this)">🔥 Tous</button>
-<button onclick="filterCat('Film',this)">🎬 Films</button>
-<button onclick="filterCat('Série',this)">📺 Séries</button>
-<button onclick="filterCat('Anime',this)">🇯🇵 Anime</button>
-<button onclick="filterCat('Amour',this)">❤️ Amour</button>
-<button onclick="filterCat('Action',this)">💥 Action</button>
+
+<div><span class="box-title">Nouveautés Films ›</span><span class="box-right">Voir La Suite ☰</span></div>
+<div class="grid" id="films"></div>
+
+<div><span class="box-title">Nouveautés Séries ›</span><span class="box-right">Voir La Suite ☰</span></div>
+<div class="grid" id="series"></div>
+
+<footer>DESTIN D'AMOUR © 2026 - Catalogue Films & Séries - Bandes-annonces officielles</footer>
 </div>
-<h2 id="sectionTitle">🔥 Tendances</h2>
-<div class="row" id="movieRow"></div>
-<div id="modal" onclick="closeModal()"><div class="modal-content" onclick="event.stopPropagation()"><img id="mImg" src=""><div class="modal-body"><span class="close" onclick="closeModal()">✕</span><h2 id="mTitle"></h2><p id="mDesc" style="color:#ccc;line-height:1.6;margin:12px 0"></p><p id="mInfo" style="color:#e50914;font-weight:bold"></p><button class="btn btn-red" onclick="openTrailer()">▶ Bande-annonce YouTube</button> <button class="btn btn-white" onclick="closeModal()">Fermer</button></div></div></div>
-<footer>Destin D'Amour.com © 2026 - Films, Séries, Anime<br>Ce site présente les informations et bandes-annonces officielles.</footer>
+
+<div id="playerPage">
+<div class="back" onclick="goHome()">‹ Retour</div>
+<div class="player" id="playerBox">
+<div class="playerTop"><span>‹</span><span id="playerName">Vidzy</span><span>›</span></div>
+<div class="playBtn" id="playBtn" onclick="playTrailer()"></div>
+<iframe id="yt" allow="autoplay; fullscreen" allowfullscreen></iframe>
+</div>
+<div class="langs">
+<button class="active" onclick="setLang(this,'VF')">☁️ VF</button>
+<button onclick="setLang(this,'VOSTFR')">☁️ VOSTFR</button>
+</div>
+<div class="info">
+<h2 id="pTitle"></h2>
+<p id="pDesc"></p>
+<p id="pMeta" style="color:#ff7a00;font-weight:bold;margin-top:8px"></p>
+<p style="font-size:12px;color:#888;margin-top:8px">Bande-annonce officielle - Elle joue directement sur Destin D'Amour</p>
+</div>
+<div id="epList"></div>
+</div>
+
 <script>
-let films=[
-{t:"Destin D'Amour",c:"Amour",a:"2025",n:"9.2",img:"https://image.tmdb.org/t/p/w500/8ZTVqvKDQ8emSGUEMjsS4yHAwrpX.jpg",d:"Une histoire d'amour inoubliable à Libreville entre deux jeunes que tout sépare mais que le destin réunit."},
-{t:"Avatar 2 : La Voie de l'Eau",c:"Film",a:"2022",n:"7.6",img:"https://image.tmdb.org/t/p/w500/s16H6tpK2utvwDtzZ8Qy4qm5Emw.jpg",d:"Jake Sully et Neytiri doivent protéger leur famille sur Pandora face à une nouvelle menace."},
-{t:"Black Panther : Wakanda Forever",c:"Film",a:"2022",n:"7.2",img:"https://image.tmdb.org/t/p/w500/sv1xJUazXeYqALzczSZ3O6nkH75.jpg",d:"Le royaume du Wakanda pleure son roi et doit se battre pour son avenir."},
-{t:"One Piece",c:"Anime",a:"1999",n:"8.7",img:"https://image.tmdb.org/t/p/w500/eVX05xRKS7JhEYQFObCi4lAnZT4.jpg",d:"Luffy et son équipage partent à la recherche du One Piece, le trésor légendaire."},
-{t:"Naruto Shippuden",c:"Anime",a:"2007",n:"8.5",img:"https://image.tmdb.org/t/p/w500/2zAxxVjD8qC2e1C8e9FfL1XvG6T.jpg",d:"Naruto revient au village pour devenir Hokage et sauver son ami Sasuke."},
-{t:"Squid Game",c:"Série",a:"2021",n:"8.0",img:"https://image.tmdb.org/t/p/w500/dDlEmu3EZ0Pgg93K2SVNLCjCSvE.jpg",d:"456 joueurs endettés acceptent un jeu mystérieux pour gagner une énorme somme."},
-{t:"Money Heist",c:"Série",a:"2017",n:"8.2",img:"https://image.tmdb.org/t/p/w500/reEMJA1uzscCbkpeRJeTT2bjqUp.jpg",d:"Un professeur recrute 8 braqueurs pour le plus grand braquage de l'histoire."},
-{t:"Titanic",c:"Amour",a:"1997",n:"7.9",img:"https://image.tmdb.org/t/p/w500/9xjZS2rlVxm8SFx8kPC3aIGCOYQ.jpg",d:"Jack et Rose vivent une histoire d'amour impossible à bord du Titanic."},
-{t:"John Wick 4",c:"Action",a:"2023",n:"7.8",img:"https://image.tmdb.org/t/p/w500/vZloFAK7NmvMGKE7VkF5UHaz0I.jpg",d:"John Wick découvre une voie pour vaincre la Grande Table."},
-{t:"Fast & Furious 10",c:"Action",a:"2023",n:"7.0",img:"https://image.tmdb.org/t/p/w500/fiVW06jE7z9YnO4trhaMEdghqVl.jpg",d:"Dom et sa famille affrontent leur ennemi le plus dangereux."}
+let data = [
+{t:"Destin D'Amour",cat:"Film",annee:"2024",note:"8.5",img:"https://image.tmdb.org/t/p/w500/8ZTVqvKDQ8emSGUEMjsS4yHAwrpX.jpg",desc:"Une histoire d'amour impossible entre deux familles rivales à Libreville. Entre trahison, pardon et destin.",yt:"dQw4w9WgXcQ",eps:1},
+{t:"Avengers : Endgame",cat:"Film",annee:"2019",note:"8.1",img:"https://image.tmdb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg",desc:"Les Avengers survivants se réunissent pour réparer les dégâts de Thanos et restaurer l'ordre dans l'univers.",yt:"TcMBFSGVi1c",eps:1},
+{t:"Heartland",cat:"Série",annee:"2007",note:"7.1",img:"https://image.tmdb.org/t/p/w500/ucm5v3k7jD8yYv7bX2r0J0X2r0J.jpg",desc:"Une famille qui vit dans un ranch et soigne les chevaux. Drame familial et amour.",yt:"dQw4w9WgXcQ",eps:20},
+{t:"Le Roi de Libreville",cat:"Film",annee:"2023",note:"7.9",img:"https://image.tmdb.org/t/p/w500/gavXtAMfBWO8i1Q0h7yXGp5jZ8jX.jpg",desc:"Un jeune gabonais revient au pays pour reprendre l'entreprise de son père.",yt:"dQw4w9WgXcQ",eps:1},
+{t:"Amour Interdit",cat:"Série",annee:"2025",note:"9.0",img:"https://image.tmdb.org/t/p/w500/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg",desc:"Série dramatique - 3 saisons. Deux amoureux séparés par la distance et les secrets de famille.",yt:"dQw4w9WgXcQ",eps:12},
+{t:"Ninja - Légende",cat:"Anime",annee:"2022",note:"8.8",img:"https://image.tmdb.org/t/p/w500/9PFonBhy4cQy7Jz20NpMygczOkv.jpg",desc:"Anime Action - Un jeune ninja doit sauver son village.",yt:"dQw4w9WgXcQ",eps:18},
+{t:"Action Libreville",cat:"Film",annee:"2024",note:"7.5",img:"https://image.tmdb.org/t/p/w500/1E5baAaEse26fej7uHcjOgEE2t2.jpg",desc:"Film d'action tourné à Libreville. Courses, poursuites et suspense.",yt:"dQw4w9WgXcQ",eps:1},
+{t:"Rire à Gogo",cat:"Comédie",annee:"2023",note:"8.1",img:"https://image.tmdb.org/t/p/w500/4Y1WNkd88JXmGfhtWR7dmDAo1T2.jpg",desc:"Comédie familiale qui va te faire rire du début à la fin.",yt:"dQw4w9WgXcQ",eps:1},
 ];
-let current=null;
-function render(list){document.getElementById('movieRow').innerHTML=list.map((m,i)=>`<div class="card" onclick="openDetail(${films.indexOf(m)})"><img src="${m.img}"><p>${m.t} • ${m.a} ⭐ ${m.n}</p></div>`).join('');}
-function showAll(b){setActive(b);document.getElementById('sectionTitle').innerText="🔥 Tendances";render(films);}
-function filterCat(cat,b){setActive(b);document.getElementById('sectionTitle').innerText=cat;render(films.filter(f=>f.c===cat));}
-function searchFilm(){let q=document.getElementById('searchInput').value.toLowerCase();render(films.filter(f=>f.t.toLowerCase().includes(q)));}
-function openDetail(i){current=films[i];document.getElementById('mImg').src=current.img;document.getElementById('mTitle').innerText=current.t;document.getElementById('mDesc').innerText=current.d;document.getElementById('mInfo').innerText=`⭐ ${current.n}/10 • ${current.a} • ${current.c}`;document.getElementById('modal').style.display='flex';}
-function openTrailer(){if(current) window.open('https://www.youtube.com/results?search_query='+encodeURIComponent(current.t+' bande annonce officielle'),'_blank');}
-function closeModal(){document.getElementById('modal').style.display='none';}
-function setActive(b){if(!b)return;document.querySelectorAll('.cat-bar button').forEach(x=>x.classList.remove('active'));b.classList.add('active');}
-render(films);
+
+let current=null, currentEp=1;
+function cardHTML(f){
+return `<div class="card" onclick="openFilm('${f.t}')">
+<span class="badge">VF+VOSTFR<br>HD</span><span class="note">${f.note}</span>
+<img src="${f.img}"><p>${f.t}</p></div>`;
+}
+function render(){
+document.getElementById('moment').innerHTML=data.slice(0,5).map(cardHTML).join('');
+document.getElementById('films').innerHTML=data.filter(x=>x.cat==='Film').map(cardHTML).join('');
+document.getElementById('series').innerHTML=data.filter(x=>x.cat==='Série' || x.cat==='Anime').map(cardHTML).join('');
+}
+render();
+
+function openFilm(title){
+current=data.find(x=>x.t===title); currentEp=1;
+document.getElementById('home').style.display='none';
+document.getElementById('playerPage').style.display='block';
+document.getElementById('pTitle').innerText=current.t;
+document.getElementById('pDesc').innerText=current.desc;
+document.getElementById('pMeta').innerText=current.cat+' • '+current.annee+' • Note : '+current.note+'/10';
+document.getElementById('playerName').innerText=current.t+' - Bande-annonce';
+document.getElementById('yt').style.display='none';
+document.getElementById('yt').src='';
+document.getElementById('playBtn').style.display='block';
+let eps='';
+for(let i=1;i<=current.eps;i++){
+eps+=`<div class="ep ${i===1?'active':''}" onclick="selectEp(${i},this)"><span>⬇️ &nbsp; ▶ &nbsp; Episode ${i}</span><span>☐</span></div>`;
+}
+document.getElementById('epList').innerHTML=eps;
+window.scrollTo(0,0);
+}
+function playTrailer(){
+document.getElementById('playBtn').style.display='none';
+let yt=document.getElementById('yt');
+yt.style.display='block';
+yt.src='https://www.youtube.com/embed/'+current.yt+'?autoplay=1&rel=0';
+}
+function selectEp(n,el){
+currentEp=n;
+document.querySelectorAll('.ep').forEach(e=>e.classList.remove('active'));
+el.classList.add('active');
+document.getElementById('yt').style.display='none';
+document.getElementById('yt').src='';
+document.getElementById('playBtn').style.display='block';
+}
+function setLang(btn,lang){
+document.querySelectorAll('.langs button').forEach(b=>b.classList.remove('active'));
+btn.classList.add('active');
+}
+function goHome(){
+document.getElementById('playerPage').style.display='none';
+document.getElementById('home').style.display='block';
+document.getElementById('yt').src='';
+}
+function searchFilm(){
+let q=document.getElementById('search').value.toLowerCase();
+let f=data.filter(x=>x.t.toLowerCase().includes(q));
+document.getElementById('moment').innerHTML=f.map(cardHTML).join('');
+}
 </script>
 </body>
-                                                                                                                                                                                                                                                                                               </html>
+</html>
