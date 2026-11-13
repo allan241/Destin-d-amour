@@ -3,63 +3,98 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DESTIN D'AMOUR - 200 Films Africains</title>
+<title>DESTIN D'AMOUR - 200 Films Africains en Français</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
-body{background:#111;color:#fff}
-header{background:#000;padding:14px;text-align:center;position:sticky;top:0;z-index:10}
-header b{font-size:20px} header b span{color:#ff7a00}
+body{background:#141414;color:#fff}
+header{background:#000;padding:14px;text-align:center;position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;padding:14px 12px}
+header b{font-size:19px} header b span{color:#ff7a00}
+.lang{background:#ff7a00;color:#fff;border:0;padding:6px 10px;border-radius:20px;font-weight:bold;font-size:12px}
 .search{margin:12px 10px;display:flex;gap:8px}
-.search input{flex:1;padding:13px;border-radius:8px;border:0}
+.search input{flex:1;padding:13px;border-radius:8px;border:0;background:#222;color:#fff}
 .search button{padding:13px;background:#ff7a00;color:#fff;border:0;border-radius:8px;font-weight:bold}
 .cats{display:flex;gap:8px;overflow-x:auto;padding:0 10px 12px}
 .cats button{padding:9px 15px;border-radius:20px;border:1px solid #333;background:#1c1c1c;color:#fff;white-space:nowrap}
 .cats button.active{background:#ff7a00}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 10px 20px}
-.card{background:#1c1c1c;border-radius:10px;overflow:hidden;cursor:pointer}
-.card img{width:100%;height:220px;object-fit:cover;background:#222}
-.card .info{padding:10px;text-align:center}
-.card .info b{font-size:13px}
+.section{padding:0 10px 18px}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.section-head h2{font-size:16px}
+.row{display:flex;gap:10px;overflow-x:auto;padding-bottom:5px}
+.card{min-width:150px;width:150px;background:#1c1c1c;border-radius:10px;overflow:hidden;cursor:pointer;flex-shrink:0}
+.card .poster{height:210px;position:relative;background:linear-gradient(135deg,#ff7a00,#222);display:flex;align-items:center;justify-content:center;text-align:center;padding:8px;font-weight:bold;font-size:14px}
+.card .poster img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.card .badge{position:absolute;top:6px;left:6px;background:#000;color:#fff;font-size:10px;padding:3px 6px;border-radius:4px;z-index:2}
+.card .note{position:absolute;top:6px;right:6px;background:#ff7a00;color:#fff;font-size:11px;padding:3px 6px;border-radius:4px;font-weight:bold;z-index:2}
+.card .info{padding:8px;text-align:center}
+.card .info b{font-size:12px}
 .card .info small{color:#bbb}
 #detail{display:none;padding:12px}
-#detail img{width:100%;height:300px;object-fit:cover;border-radius:10px}
+#detail img{width:100%;height:300px;object-fit:cover;border-radius:10px;background:#222}
 #player{display:none;margin:14px 0;background:#000;border-radius:10px;overflow:hidden}
 #player iframe{width:100%;height:230px;border:0}
 .btns{display:flex;gap:10px;margin:14px 0}
 .btns button{flex:1;padding:13px;border:0;border-radius:8px;font-weight:bold}
 .vf{background:#ff7a00;color:#fff} .vost{background:#333;color:#fff}
 .back{color:#ff7a00;cursor:pointer;margin-bottom:12px;display:block}
-#more{width:90%;margin:0 auto 30px;display:block;padding:14px;background:#ff7a00;color:#fff;border:0;border-radius:10px;font-weight:bold}
 </style>
 </head>
 <body>
-<header><b>DESTIN <span>▶</span> D'AMOUR</b><p>200 FILMS AFRICAINS - ÇA JOUE ICI</p></header>
-<div class="search"><input id="q" placeholder="🔍 Cherche..."><button onclick="doSearch()">CHERCHER</button></div>
+<header><b>DESTIN <span>▶</span> D'AMOUR</b><button class="lang">🇫🇷 FRANÇAIS</button></header>
+<p style="text-align:center;font-size:12px;color:#aaa;padding:6px">Tout en français - 200 Films Africains - Films qui parlent en français (VF)</p>
+<div class="search"><input id="q" placeholder="🔍 Cherche un film africain en français..."><button onclick="doSearch()">CHERCHER</button></div>
 <div class="cats" id="cats"></div>
-<div id="home"><h2 id="title" style="margin:4px 10px 14px">🎬 200 Films Africains</h2><div class="grid" id="films"></div><button id="more" onclick="loadMore()">CHARGER ENCORE ⬇️</button></div>
+<div id="home">
+<div class="section"><div class="section-head"><h2>🔥 Films du moment - 2026</h2></div><div class="row" id="row1"></div></div>
+<div class="section"><div class="section-head"><h2>🆕 Nouveautés Films</h2></div><div class="row" id="row2"></div></div>
+<div class="section"><div class="section-head"><h2>📺 Nouveautés Séries</h2></div><div class="row" id="row3"></div></div>
+<div class="section"><div class="section-head"><h2>🌍 Tous les Films - 200 Films</h2></div><div class="row" id="rowAll"></div></div>
+</div>
 <div id="detail">
 <span class="back" onclick="showHome()">‹ Retour</span>
-<img id="d-img"><h1 id="d-title" style="margin:12px 0 6px"></h1><p id="d-desc" style="color:#ccc"></p><div id="d-meta" style="color:#ff7a00;margin:10px 0;font-weight:bold"></div>
+<img id="d-img"><h1 id="d-title" style="margin:12px 0 6px"></h1><p id="d-sub" style="color:#ff7a00;font-weight:bold"></p><p id="d-desc" style="color:#ccc;margin-top:6px"></p><div id="d-meta" style="color:#ff7a00;margin:10px 0;font-weight:bold"></div>
 <div id="player"><iframe id="video" allowfullscreen></iframe></div>
-<div class="btns"><button class="vf" onclick="playFilm()">▶ VOIR LE FILM ICI</button><button class="vost" onclick="showHome()">FERMER</button></div>
+<div class="btns"><button class="vf" onclick="playFilm()">▶ VOIR EN FRANÇAIS (VF)</button><button class="vost" onclick="showHome()">FERMER</button></div>
 </div>
 <script>
+// 1. FILMS DU MOMENT 2026 - EN FRANÇAIS
+let moment=[
+{t:"Le Bombardier du Bidonville",orig:"Slum Bomber",pays:"Ouganda",annee:"2026",note:"8.5",cat:"Ouganda",desc:"Une jeune femme boxe pour sauver sa famille."},
+{t:"Dame de Lagos",orig:"Lady",pays:"Nigeria",annee:"2026",note:"8.3",cat:"Nollywood",desc:"Une chauffeuse de taxi à Lagos."},
+{t:"Adanne",orig:"Adanne",pays:"Nigeria",annee:"2026",note:"8.2",cat:"Nollywood",desc:"Trois générations de femmes."},
+{t:"Pour Adaego, Avec Amour",orig:"To Adaego With Love",pays:"Nigeria",annee:"2026",note:"8.4",cat:"Nollywood",desc:"Un des meilleurs films de l'année."},
+{t:"Le Troupeau",orig:"The Herd",pays:"Nigeria",annee:"2025",note:"8.1",cat:"Nollywood",desc:"Un mariage attaqué."},
+{t:"L'Ombre de Mon Père",orig:"My Father's Shadow",pays:"Nigeria",annee:"2025",note:"8.6",cat:"Nollywood",desc:"Meilleur film 2026."},
+{t:"L'Appel de Ma Vie",orig:"Call of My Life",pays:"Nigeria",annee:"2026",note:"7.9",cat:"Nollywood",desc:"Numéro 1 au cinéma."},
+{t:"Amour et Nouvelles Notes",orig:"Love and New Notes",pays:"Nigeria",annee:"2026",note:"7.8",cat:"Nollywood",desc:"Numéro 2 au cinéma."}
+];
+let nouveautes=[
+{t:"Derrière Les Coulisses",orig:"Behind The Scenes",pays:"Nigeria",annee:"2025",note:"8.0",cat:"Nollywood",desc:"Plus de 2 milliards."},
+{t:"Les Couleurs du Feu",orig:"Colours of Fire",pays:"Nigeria",annee:"2025",note:"7.9",cat:"Nollywood",desc:"Un des meilleurs 2025."},
+{t:"Le Cadeau du Serpent",orig:"The Serpent's Gift",pays:"Nigeria",annee:"2025",note:"7.8",cat:"Nollywood",desc:"Héritage, famille."},
+{t:"L'Amour en D'autres Mots",orig:"Love In Other Words",pays:"Nigeria",annee:"2025",note:"7.9",cat:"Nollywood",desc:"Le plus vu sur YouTube 2025."},
+{t:"Là Où Vit L'Amour",orig:"Where Love Lives",pays:"Nigeria",annee:"2025",note:"7.6",cat:"Nollywood",desc:"Un couple, des voisins."},
+{t:"Joyeux Anniversaire",orig:"Happy Birthday",pays:"Egypte",annee:"2025",note:"7.8",cat:"Egypte",desc:"Petite fille, anniversaire."}
+];
+let series=[
+{t:"Tuer un Singe",orig:"To Kill a Monkey",pays:"Nigeria",annee:"2025",note:"8.7",cat:"Nollywood",desc:"Numéro 1 série Netflix 2025."},
+{t:"La Ferme des Bébés",orig:"Baby Farm",pays:"Nigeria",annee:"2025",note:"8.2",cat:"Nollywood",desc:"Série Netflix, trafic de bébés."},
+{t:"Le Pacte",orig:"The Covenant",pays:"Nigeria",annee:"2025",note:"7.8",cat:"Nollywood",desc:"Frère kidnappé."},
+{t:"La Fête",orig:"The Party",pays:"Nigeria",annee:"2025",note:"7.9",cat:"Nollywood",desc:"Meurtre pendant une fête."},
+{t:"Mauvaise Influence",orig:"Bad Influencer",pays:"Afrique du Sud",annee:"2025",note:"7.7",cat:"Afrique du Sud",desc:"Réseaux sociaux, crime."},
+{t:"Les Rois de Jo'Burg - Saison 3",orig:"Kings of Jo'Burg S3",pays:"Afrique du Sud",annee:"2025",note:"7.8",cat:"Afrique du Sud",desc:"Famille, crime."}
+];
+// 2. LES 200 FILMS D'AVANT - ILS SONT TOUS ICI AUSSI
 let raw=`Atlantique|Sénégal|2019|Sénégal
 Rafiki|Kenya|2018|Kenya
 Lionheart|Nigeria|2018|Nollywood
 King of Boys|Nigeria|2018|Nollywood
-King of Boys 2|Nigeria|2021|Nollywood
 The Wedding Party|Nigeria|2016|Nollywood
-The Wedding Party 2|Nigeria|2017|Nollywood
 October 1|Nigeria|2014|Nollywood
 93 Days|Nigeria|2016|Nollywood
 Oloture|Nigeria|2019|Nollywood
 Blood Sisters|Nigeria|2022|Nollywood
-Far From Home|Nigeria|2022|Nollywood
 Anikulapo|Nigeria|2022|Nollywood
-Anikulapo Rise of the Spectre|Nigeria|2024|Nollywood
 Gangs of Lagos|Nigeria|2023|Nollywood
-Shanty Town|Nigeria|2023|Nollywood
 La Noire de...|Sénégal|1966|Sénégal
 Touki Bouki|Sénégal|1973|Sénégal
 Moolaadé|Sénégal|2004|Sénégal
@@ -71,137 +106,114 @@ Quartier Mozart|Cameroun|1992|Cameroun
 Sango Malo|Cameroun|1991|Cameroun
 Le Silence de la Forêt|Gabon|2003|Gabon
 Dôlè|Gabon|2000|Gabon
-L'Oeil du Cyclone|Burkina Faso|2015|Burkina
-Wulu|Mali|2016|Mali
-Wallay|Burkina Faso|2017|Burkina
 Supa Modo|Kenya|2018|Kenya
 Nairobi Half Life|Kenya|2012|Kenya
 Queen of Katwe|Ouganda|2016|Kenya
-Queen Sono|Afrique du Sud|2020|Afrique du Sud
 Blood & Water|Afrique du Sud|2020|Afrique du Sud
-Jiva!|Afrique du Sud|2021|Afrique du Sud
-Savage Beauty|Afrique du Sud|2022|Afrique du Sud
 The Woman King|Bénin|2022|Bénin
-Banel & Adama|Sénégal|2023|Sénégal
-Omen|RDC|2023|Congo
 Mami Wata|Nigeria|2023|Nollywood
 The Black Book|Nigeria|2023|Nollywood
 Jagun Jagun|Nigeria|2023|Nollywood
+A Tribe Called Judah|Nigeria|2023|Nollywood
+Lisabi|Nigeria|2024|Nollywood
+Keteke|Ghana|2017|Ghana
+Azali|Ghana|2018|Ghana
+The Burial of Kojo|Ghana|2018|Ghana
+Living in Bondage|Nigeria|1992|Nollywood
+Citation|Nigeria|2020|Nollywood
+Sugar Rush|Nigeria|2019|Nollywood
+Merry Men|Nigeria|2018|Nollywood
+Omo Ghetto|Nigeria|2020|Nollywood
+Chief Daddy|Nigeria|2018|Nollywood
+Tsotsi|Afrique du Sud|2005|Afrique du Sud
+District 9|Afrique du Sud|2009|Afrique du Sud
+Hotel Rwanda|Rwanda|2004|Congo
+Beasts of No Nation|Ghana|2015|Ghana
+Xala|Sénégal|1975|Sénégal
+Camp de Thiaroye|Sénégal|1988|Sénégal
+Guimba|Mali|1995|Mali
+Yaaba|Burkina Faso|1989|Burkina
+Muna Moto|Cameroun|1975|Cameroun
+The Fisherman's Diary|Cameroun|2020|Cameroun
+Anikulapo Rise|Nigeria|2024|Nollywood
+Shanty Town|Nigeria|2023|Nollywood
+Far From Home|Nigeria|2022|Nollywood
 A Sunday Affair|Nigeria|2023|Nollywood
 Ijogbon|Nigeria|2023|Nollywood
-A Tribe Called Judah|Nigeria|2023|Nollywood
 Sista|Nigeria|2023|Nollywood
 Ada Omo Daddy|Nigeria|2023|Nollywood
 Ajosepo|Nigeria|2024|Nollywood
 Beast of Two Worlds|Nigeria|2024|Nollywood
-Lisabi|Nigeria|2024|Nollywood
 Christmas in Lagos|Nigeria|2024|Nollywood
 Almajiri|Nigeria|2022|Nollywood
 The Trade|Nigeria|2023|Nollywood
 Aburo|Ghana|2024|Ghana
-Keteke|Ghana|2017|Ghana
-Azali|Ghana|2018|Ghana
-The Burial of Kojo|Ghana|2018|Ghana
 Single and Married|Ghana|2012|Ghana
-Living in Bondage|Nigeria|1992|Nollywood
-Living in Bondage Breaking Free|Nigeria|2019|Nollywood
 Rattlesnake|Nigeria|2020|Nollywood
-Citation|Nigeria|2020|Nollywood
-Sugar Rush|Nigeria|2019|Nollywood
-Merry Men|Nigeria|2018|Nollywood
 Merry Men 2|Nigeria|2019|Nollywood
 Your Excellency|Nigeria|2019|Nollywood
-Omo Ghetto The Saga|Nigeria|2020|Nollywood
-Chief Daddy|Nigeria|2018|Nollywood
-Chief Daddy 2|Nigeria|2021|Nollywood
 The Set Up|Nigeria|2019|Nollywood
-The Set Up 2|Nigeria|2022|Nollywood
 Quam's Money|Nigeria|2020|Nollywood
 Namaste Wahala|Nigeria|2020|Nollywood
 Swallow|Nigeria|2021|Nollywood
 Eyimofe|Nigeria|2020|Nollywood
-This Lady Called Life|Nigeria|2020|Nollywood
 A Naija Christmas|Nigeria|2021|Nollywood
 Breaded Life|Nigeria|2021|Nollywood
-Bad Boys and Brides|Nigeria|2023|Nollywood
-Progressive Tailors Club|Nigeria|2021|Nollywood
 Aki and Pawpaw|Nigeria|2021|Nollywood
 Battle on Buka Street|Nigeria|2022|Nollywood
 Brotherhood|Nigeria|2022|Nollywood
 Elesin Oba|Nigeria|2022|Nollywood
-The Delivery Boy|Nigeria|2018|Nollywood
-Òlòtūré|Nigeria|2019|Nollywood
 Up North|Nigeria|2018|Nollywood
 The Ghost and the Tout|Nigeria|2018|Nollywood
 Mokalik|Nigeria|2019|Nollywood
 The Figurine|Nigeria|2009|Nollywood
 Phone Swap|Nigeria|2012|Nollywood
-Mr and Mrs|Nigeria|2012|Nollywood
 Half of a Yellow Sun|Nigeria|2013|Nollywood
-The Meeting|Nigeria|2012|Nollywood
-Last Flight to Abuja|Nigeria|2012|Nollywood
-Tsotsi|Afrique du Sud|2005|Afrique du Sud
-District 9|Afrique du Sud|2009|Afrique du Sud
 Invictus|Afrique du Sud|2009|Afrique du Sud
-Mandela Long Walk to Freedom|Afrique du Sud|2013|Afrique du Sud
+Mandela Long Walk|Afrique du Sud|2013|Afrique du Sud
 Sarafina|Afrique du Sud|1992|Afrique du Sud
 Cry Freedom|Afrique du Sud|1987|Afrique du Sud
 Yesterday|Afrique du Sud|2004|Afrique du Sud
-Hotel Rwanda|Rwanda|2004|Congo
 Sometimes in April|Rwanda|2005|Congo
-Shooting Dogs|Rwanda|2005|Congo
-Beasts of No Nation|Ghana|2015|Ghana
 The Cursed Ones|Ghana|2015|Ghana
 Sidechic Gang|Ghana|2018|Ghana
 Aloe Vera|Ghana|2020|Ghana
 Fix Us|Ghana|2019|Ghana
-Xala|Sénégal|1975|Sénégal
 Ceddo|Sénégal|1977|Sénégal
 Emitai|Sénégal|1971|Sénégal
-Camp de Thiaroye|Sénégal|1988|Sénégal
 Hyènes|Sénégal|1992|Sénégal
 Faat Kine|Sénégal|2000|Sénégal
 Madame Brouette|Sénégal|2002|Sénégal
 Karmen Geï|Sénégal|2001|Sénégal
-Guimba the Tyrant|Mali|1995|Mali
 Life on Earth|Mali|1998|Mali
 The Wind|Mali|1982|Mali
-Yaaba|Burkina Faso|1989|Burkina
 Tilaï|Burkina Faso|1990|Burkina
 Samba Traoré|Burkina Faso|1992|Burkina
 Kini and Adams|Burkina Faso|1997|Burkina
 Buud Yam|Burkina Faso|1997|Burkina
-Muna Moto|Cameroun|1975|Cameroun
 Clando|Cameroun|1996|Cameroun
 Sisters in Law|Cameroun|2005|Cameroun
-The Fight of the Angel|Cameroun|2010|Cameroun
 White Colour Black|Cameroun|2018|Cameroun
-The Fisherman's Diary|Cameroun|2020|Cameroun
 Therapy|Cameroun|2021|Cameroun
 A Man for the Weekend|Cameroun|2017|Cameroun
 Rebel|Gabon|2018|Gabon
 The African Storm|Gabon|2017|Gabon
 Boxing Libreville|Gabon|2018|Gabon
 Le Grand Blanc de Lambaréné|Gabon|1995|Gabon
-N'Goné|Gabon|2015|Gabon
 The Mercy of the Jungle|Rwanda|2018|Congo
 Grey Matter|Rwanda|2011|Congo
-The Unseen|Afrique du Sud|2017|Afrique du Sud
 Five Fingers for Marseilles|Afrique du Sud|2017|Afrique du Sud
-Sew the Winter to My Skin|Afrique du Sud|2018|Afrique du Sud
+Sew the Winter|Afrique du Sud|2018|Afrique du Sud
 Knuckle City|Afrique du Sud|2019|Afrique du Sud
 Barakat|Afrique du Sud|2020|Afrique du Sud
 Good Madam|Afrique du Sud|2021|Afrique du Sud
-The Kissing Booth|Afrique du Sud|2018|Afrique du Sud
 Santana|Afrique du Sud|2020|Afrique du Sud
 Seriously Single|Afrique du Sud|2020|Afrique du Sud
-Happiness Ever After|Afrique du Sud|2021|Afrique du Sud
 Collision|Afrique du Sud|2022|Afrique du Sud
 Wild is the Wind|Afrique du Sud|2022|Afrique du Sud
 The Umbrella Men|Afrique du Sud|2022|Afrique du Sud
 Shaka iLembe|Afrique du Sud|2023|Afrique du Sud
 Yizo Yizo|Afrique du Sud|1999|Afrique du Sud
-Soul City|Afrique du Sud|1994|Afrique du Sud
 Uzalo|Afrique du Sud|2015|Afrique du Sud
 Skeem Saam|Afrique du Sud|2011|Afrique du Sud
 Scandal|Afrique du Sud|2005|Afrique du Sud
@@ -215,11 +227,67 @@ Isono|Afrique du Sud|2020|Afrique du Sud
 House of Zwide|Afrique du Sud|2021|Afrique du Sud
 The Wife|Afrique du Sud|2021|Afrique du Sud
 Shaka Zulu|Afrique du Sud|1986|Afrique du Sud
-Roots|Gambie|1977|Sénégal
 The Boy Who Harnessed the Wind|Malawi|2019|Kenya
-The Last Fishing Boat|Malawi|2012|Kenya
 Road to Sunrise|Malawi|2017|Kenya
 Fatsani|Malawi|2020|Kenya
-The Road to Sunrise|Malawi|2017|Kenya
-Lusaka|Zambie|2020|Congo
-I Am Not a Witch|Zambie|2017|
+I Am Not a Witch|Zambie|2017|Congo
+Cook Off|Zimbabwe|2017|Congo
+Gonarezhou|Zimbabwe|2020|Congo
+The Letter|Kenya|2019|Kenya
+Disconnect|Kenya|2018|Kenya
+Disconnect 2|Kenya|2023|Kenya
+Click Click Bang|Kenya|2022|Kenya
+Country Queen|Kenya|2022|Kenya
+Single Kiasi|Kenya|2022|Kenya
+Pepeta|Kenya|2022|Kenya
+Lusala|Kenya|2019|Kenya
+Poacher|Kenya|2018|Kenya
+Wulu|Mali|2016|Mali
+Wallay|Burkina Faso|2017|Burkina
+L'Oeil du Cyclone|Burkina Faso|2015|Burkina
+Banel & Adama|Sénégal|2023|Sénégal
+Omen|RDC|2023|Congo
+One Woman One Bra|Kenya|2025|Kenya
+Finding Me|Nigeria|2025|Nollywood
+Makemation|Nigeria|2025|Nollywood
+Ori Rebirth|Nigeria|2025|Nollywood
+Labake Olododo|Nigeria|2025|Nollywood
+Throne and Thorns|Nigeria|2026|Nollywood
+Heat Above Heart|Nigeria|2026|Nollywood
+With Love Hazel|Nigeria|2026|Nollywood
+A Bride For The Season|Nigeria|2025|Nollywood
+Djeliya|Burkina Faso|2026|Burkina
+Diya|Tchad|2025|Congo
+Memory of Princess Mumbi|Kenya|2025|Kenya
+My Father and Qaddafi|Libye|2025|Egypte
+Queja 713317|Egypte|2025|Egypte
+Promised Sky|Tunisie|2025|Egypte
+Cotton Queen|Soudan|2025|Egypte
+Black Burns Fast|Afrique du Sud|2026|Afrique du Sud
+Kikuyu Land|Kenya|2026|Kenya
+Alea Jacarandas|Algérie|2026|Egypte
+Variations on a Theme|Afrique du Sud|2026|Afrique du Sud
+The Spectacular Death of Prisca|Nigeria|2026|Nollywood`;
+let rest=raw.trim().split("\n").map(l=>{let p=l.split("|");return {t:p[0],orig:p[0],pays:p[1],annee:p[2],note:"7.0",cat:p[3],desc:"Film africain - "+p[1]+" - "+p[2]}});
+let all=[...moment,...nouveautes,...series,...rest];
+let cats=["Tous","Nollywood","Sénégal","Kenya","Gabon","Congo","Afrique du Sud","Egypte","Ouganda"];
+let currentCat="Tous", currentFilm=null, currentList=all;
+function cardHTML(f){let idx=all.indexOf(f);return `<div class="card" onclick="openDetail(${idx})"><div class="poster"><span class="badge">VF<br>HD</span><span class="note">${f.note}</span><span>${f.t}</span><img src="" data-title="${f.orig}" onerror="this.style.display='none'" loading="lazy"></div><div class="info"><b>${f.t}</b><br><small>${f.pays} • ${f.annee} • En Français</small></div></div>`;}
+function render(){
+document.getElementById('cats').innerHTML=cats.map(c=>`<button class="${c==currentCat?'active':''}" onclick="filterCat('${c}')">${c}</button>`).join('');
+document.getElementById('row1').innerHTML=moment.map(cardHTML).join('');
+document.getElementById('row2').innerHTML=nouveautes.map(cardHTML).join('');
+document.getElementById('row3').innerHTML=series.map(cardHTML).join('');
+document.getElementById('rowAll').innerHTML=currentList.map(cardHTML).join('');
+setTimeout(loadPosters,100);
+}
+async function loadPosters(){let imgs=document.querySelectorAll('img[data-title]');for(let img of imgs){let title=img.getAttribute('data-title');try{let r=await fetch("https://search.imdbot.workers.dev/?q="+encodeURIComponent(title));let j=await r.json();if(j.description && j.description[0] && j.description[0]["#IMG_POSTER"]) img.src=j.description[0]["#IMG_POSTER"];}catch(e){}}}
+function filterCat(c){currentCat=c;currentList=c=="Tous"?all:all.filter(f=>f.cat==c);render();}
+function doSearch(){let q=document.getElementById('q').value.toLowerCase();currentList=all.filter(f=>f.t.toLowerCase().includes(q)||f.orig.toLowerCase().includes(q)||f.pays.toLowerCase().includes(q));render();}
+function openDetail(idx){let f=all[idx];currentFilm=f;document.getElementById('home').style.display='none';document.getElementById('detail').style.display='block';document.getElementById('player').style.display='none';document.getElementById('d-img').src="";document.getElementById('d-title').innerText=f.t;document.getElementById('d-sub').innerText="Titre original : "+f.orig+" • En Français (VF)";document.getElementById('d-desc').innerText=f.desc;document.getElementById('d-meta').innerText=f.pays+' • '+f.annee+' • ⭐ '+f.note+' • Langue : Français';window.scrollTo(0,0);fetch("https://search.imdbot.workers.dev/?q="+encodeURIComponent(f.orig)).then(r=>r.json()).then(j=>{if(j.description && j.description[0]) document.getElementById('d-img').src=j.description[0]["#IMG_POSTER"];});}
+function playFilm(){document.getElementById('player').style.display='block';document.getElementById('video').src="https://www.youtube.com/embed?listType=search&list="+encodeURIComponent(currentFilm.t+" "+currentFilm.orig+" film complet en français VF")+"&hl=fr&cc_lang_pref=fr&cc_load_policy=1";document.getElementById('player').scrollIntoView();}
+function showHome(){document.getElementById('home').style.display='block';document.getElementById('detail').style.display='none';document.getElementById('video').src="";}
+render();
+</script>
+</body>
+</html>
