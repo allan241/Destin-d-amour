@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DESTIN D'AMOUR - 200 Films Africains en Français</title>
+<title> Africa movie</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
 body{background:#141414;color:#fff}
@@ -56,7 +56,6 @@ header b{font-size:19px} header b span{color:#ff7a00}
 <div class="btns"><button class="vf" onclick="playFilm()">▶ VOIR EN FRANÇAIS (VF)</button><button class="vost" onclick="showHome()">FERMER</button></div>
 </div>
 <script>
-// 1. FILMS DU MOMENT 2026 - EN FRANÇAIS
 let moment=[
 {t:"Le Bombardier du Bidonville",orig:"Slum Bomber",pays:"Ouganda",annee:"2026",note:"8.5",cat:"Ouganda",desc:"Une jeune femme boxe pour sauver sa famille."},
 {t:"Dame de Lagos",orig:"Lady",pays:"Nigeria",annee:"2026",note:"8.3",cat:"Nollywood",desc:"Une chauffeuse de taxi à Lagos."},
@@ -83,7 +82,6 @@ let series=[
 {t:"Mauvaise Influence",orig:"Bad Influencer",pays:"Afrique du Sud",annee:"2025",note:"7.7",cat:"Afrique du Sud",desc:"Réseaux sociaux, crime."},
 {t:"Les Rois de Jo'Burg - Saison 3",orig:"Kings of Jo'Burg S3",pays:"Afrique du Sud",annee:"2025",note:"7.8",cat:"Afrique du Sud",desc:"Famille, crime."}
 ];
-// 2. LES 200 FILMS D'AVANT - ILS SONT TOUS ICI AUSSI
 let raw=`Atlantique|Sénégal|2019|Sénégal
 Rafiki|Kenya|2018|Kenya
 Lionheart|Nigeria|2018|Nollywood
@@ -285,7 +283,10 @@ async function loadPosters(){let imgs=document.querySelectorAll('img[data-title]
 function filterCat(c){currentCat=c;currentList=c=="Tous"?all:all.filter(f=>f.cat==c);render();}
 function doSearch(){let q=document.getElementById('q').value.toLowerCase();currentList=all.filter(f=>f.t.toLowerCase().includes(q)||f.orig.toLowerCase().includes(q)||f.pays.toLowerCase().includes(q));render();}
 function openDetail(idx){let f=all[idx];currentFilm=f;document.getElementById('home').style.display='none';document.getElementById('detail').style.display='block';document.getElementById('player').style.display='none';document.getElementById('d-img').src="";document.getElementById('d-title').innerText=f.t;document.getElementById('d-sub').innerText="Titre original : "+f.orig+" • En Français (VF)";document.getElementById('d-desc').innerText=f.desc;document.getElementById('d-meta').innerText=f.pays+' • '+f.annee+' • ⭐ '+f.note+' • Langue : Français';window.scrollTo(0,0);fetch("https://search.imdbot.workers.dev/?q="+encodeURIComponent(f.orig)).then(r=>r.json()).then(j=>{if(j.description && j.description[0]) document.getElementById('d-img').src=j.description[0]["#IMG_POSTER"];});}
-function playFilm(){document.getElementById('player').style.display='block';document.getElementById('video').src="https://www.youtube.com/embed?listType=search&list="+encodeURIComponent(currentFilm.t+" "+currentFilm.orig+" film complet en français VF")+"&hl=fr&cc_lang_pref=fr&cc_load_policy=1";document.getElementById('player').scrollIntoView();}
+function playFilm(){
+let lien="https://www.youtube.com/results?search_query="+encodeURIComponent(currentFilm.t+" "+currentFilm.orig+" bande annonce VF");
+window.open(lien,"_blank");
+}
 function showHome(){document.getElementById('home').style.display='block';document.getElementById('detail').style.display='none';document.getElementById('video').src="";}
 render();
 </script>
